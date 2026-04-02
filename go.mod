@@ -1,3 +1,3 @@
-module github.com/jarxorg/io2
+module github.com/mojatter/io2
 
-go 1.16
+go 1.26

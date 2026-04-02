@@ -5,10 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"strings"
 
-	"github.com/jarxorg/io2"
+	"github.com/mojatter/io2"
 )
 
 func ExampleDelegateReader() {
@@ -20,7 +19,7 @@ func ExampleDelegateReader() {
 	}
 
 	var err error
-	_, err = ioutil.ReadAll(r)
+	_, err = io.ReadAll(r)
 	fmt.Printf("Error: %v\n", err)
 
 	// Output: Error: custom
@@ -51,11 +50,11 @@ func ExampleMultiReadSeeker() {
 	)
 
 	r.Seek(5, io.SeekStart)
-	p, _ := ioutil.ReadAll(r)
+	p, _ := io.ReadAll(r)
 	fmt.Println(string(p))
 
 	r.Seek(-5, io.SeekEnd)
-	p, _ = ioutil.ReadAll(r)
+	p, _ = io.ReadAll(r)
 	fmt.Println(string(p))
 
 	// Output:

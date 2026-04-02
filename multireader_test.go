@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,7 +12,7 @@ import (
 )
 
 func testMultiFilenames(contents ...string) ([]string, func(), error) {
-	dir, err := ioutil.TempDir("", "*.multireader")
+	dir, err := os.MkdirTemp("", "*.multireader")
 	if err != nil {
 		return nil, nil, err
 	}
@@ -21,7 +20,7 @@ func testMultiFilenames(contents ...string) ([]string, func(), error) {
 	var names []string
 	for i, data := range contents {
 		name := filepath.Join(dir, fmt.Sprintf("%d.txt", i+1))
-		if err = ioutil.WriteFile(name, []byte(data), os.ModePerm); err != nil {
+		if err = os.WriteFile(name, []byte(data), os.ModePerm); err != nil {
 			break
 		}
 		names = append(names, name)
@@ -167,7 +166,7 @@ func TestMultiSeek(t *testing.T) {
 					mustNewMultiFileReader(t, filenames...),
 				}
 				for _, r := range rs {
-					ioutil.ReadAll(r)
+					io.ReadAll(r)
 				}
 				return rs
 			},
@@ -350,7 +349,7 @@ func TestMultiSeek(t *testing.T) {
 			t.Errorf("tests[%d-%d] n is %d; want %d", i, j, n, test.n)
 		}
 
-		p, err := ioutil.ReadAll(r)
+		p, err := io.ReadAll(r)
 		if err != nil {
 			t.Fatalf("tests[%d-%d] error %v", i, j, err)
 		}

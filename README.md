@@ -1,8 +1,8 @@
-# github.com/jarxorg/io2
+# github.com/mojatter/io2
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/jarxorg/io2)](https://pkg.go.dev/github.com/jarxorg/io2)
-[![Report Card](https://goreportcard.com/badge/github.com/jarxorg/io2)](https://goreportcard.com/report/github.com/jarxorg/io2)
-[![Coverage Status](https://coveralls.io/repos/github/jarxorg/io2/badge.svg?branch=main)](https://coveralls.io/github/jarxorg/io2?branch=main)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/mojatter/io2)](https://pkg.go.dev/github.com/mojatter/io2)
+[![Report Card](https://goreportcard.com/badge/github.com/mojatter/io2)](https://goreportcard.com/report/github.com/mojatter/io2)
+[![Coverage Status](https://coveralls.io/repos/github/mojatter/io2/badge.svg?branch=main)](https://coveralls.io/github/mojatter/io2?branch=main)
 
 Go "io" package utilities.
 
@@ -25,7 +25,7 @@ import (
   "fmt"
   "io/ioutil"
 
-  "github.com/jarxorg/io2"
+  "github.com/mojatter/io2"
 )
 
 func main() {
@@ -90,7 +90,7 @@ import (
   "fmt"
   "io"
 
-  "github.com/jarxorg/io2"
+  "github.com/mojatter/io2"
 )
 
 func main() {
@@ -125,7 +125,7 @@ import (
   "io/ioutil"
   "strings"
 
-  "github.com/jarxorg/io2"
+  "github.com/mojatter/io2"
 )
 
 func main() {
