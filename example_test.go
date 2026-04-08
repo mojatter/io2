@@ -2,6 +2,7 @@ package io2_test
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"io"
@@ -41,6 +42,22 @@ func ExampleNewWriteSeekBuffer() {
 	// Output:
 	// Hello world!
 	// Hello world?
+}
+
+func ExampleCountingReader() {
+	cr := io2.NewCountingReader(strings.NewReader("hello world"))
+	io.Copy(io.Discard, cr)
+	fmt.Printf("read %d bytes\n", cr.N())
+
+	// Output: read 11 bytes
+}
+
+func ExampleHashReader() {
+	hr := io2.NewHashReader(strings.NewReader("the quick brown fox"), sha256.New())
+	io.Copy(io.Discard, hr)
+	fmt.Printf("%x\n", hr.Sum(nil))
+
+	// Output: 9ecb36561341d18eb65484e833efea61edc74b84cf5e6ae1b81c63533e25fc8f
 }
 
 func ExampleMultiReadSeeker() {
