@@ -53,7 +53,7 @@ func (d *Delegator) Close() error {
 }
 
 // Delegate returns a Delegator with the provided io interfaces (io.Reader, io.Seeker, io.Writer, io.Closer).
-func Delegate(i interface{}) *Delegator {
+func Delegate(i any) *Delegator {
 	d := &Delegator{}
 	if r, ok := i.(io.Reader); ok {
 		d.ReadFunc = r.Read
