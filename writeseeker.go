@@ -24,7 +24,7 @@ var _ WriteSeekCloser = (*WriteSeekBuffer)(nil)
 // NewWriteSeekBuffer returns an WriteSeekBuffer with the initial capacity.
 func NewWriteSeekBuffer(capacity int) *WriteSeekBuffer {
 	return &WriteSeekBuffer{
-		buf: bytes.NewBuffer(make([]byte, capacity)),
+		buf: bytes.NewBuffer(make([]byte, 0, capacity)),
 	}
 }
 
