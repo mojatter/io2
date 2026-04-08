@@ -65,6 +65,25 @@ func TestWrite(t *testing.T) {
 	}
 }
 
+func TestNewWriteSeekBufferEmpty(t *testing.T) {
+	b := NewWriteSeekBuffer(16)
+	defer b.Close()
+
+	if got := b.Len(); got != 0 {
+		t.Errorf("Len() = %d; want 0", got)
+	}
+	if got := len(b.Bytes()); got != 0 {
+		t.Errorf("len(Bytes()) = %d; want 0", got)
+	}
+	end, err := b.Seek(0, io.SeekEnd)
+	if err != nil {
+		t.Fatalf("Seek: %v", err)
+	}
+	if end != 0 {
+		t.Errorf("Seek(0, SeekEnd) = %d; want 0", end)
+	}
+}
+
 func TestSeek(t *testing.T) {
 	b := NewWriteSeekBufferBytes([]byte(`123456789`))
 	defer b.Close()
