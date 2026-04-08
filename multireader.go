@@ -20,7 +20,7 @@ type MultiReadCloser interface {
 	io.Closer
 }
 
-// MultiReadCloser is the interface that groups the MultiReader, Seek and SeekReader methods.
+// MultiReadSeeker is the interface that groups the MultiReader, Seek and SeekReader methods.
 type MultiReadSeeker interface {
 	MultiReader
 	io.Seeker
@@ -323,7 +323,8 @@ func (mr *multiReader) seekEnd(offset int64, end int) (int64, error) {
 
 func (mr *multiReader) Close() error {
 	var errs []string
-	mr.each(0, 1, func(r *singleReader) error {
+	// Callback never returns an error; Close failures are aggregated in errs.
+	_ = mr.each(0, 1, func(r *singleReader) error {
 		if err := r.Close(); err != nil {
 			errs = append(errs, err.Error())
 		}
