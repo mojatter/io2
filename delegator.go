@@ -161,7 +161,8 @@ func DelegateWriteSeekCloser(i WriteSeekCloser) *Delegator {
 }
 
 // NopReadCloser returns a ReadCloser with a no-op Close method wrapping the provided interface.
-// This function like io.NopCloser(io.Reader).
+//
+// Deprecated: use the standard library's io.NopCloser instead.
 func NopReadCloser(r io.Reader) io.ReadCloser {
 	return DelegateReader(r)
 }
