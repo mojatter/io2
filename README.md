@@ -10,6 +10,9 @@ Go "io" package utilities.
 - [No-op Closer](#no-op-closer)
 - [WriteSeeker](#writeseeker)
 - [Multi Readers](#multi-readers)
+- [Counting Reader / Writer](#counting-reader--writer)
+- [Hash Reader](#hash-reader)
+- [Context Reader / Writer](#context-reader--writer)
 
 ## Delegator
 
@@ -46,9 +49,13 @@ func main() {
 
 ### No-op Closer
 
+> **Note:** `NopReadCloser` is deprecated since v0.9.0; use the standard library's
+> `io.NopCloser` instead. The other helpers remain useful because `io.NopCloser`
+> only accepts a plain `io.Reader`.
+
 ```go
 // NopReadCloser returns a ReadCloser with a no-op Close method wrapping the provided interface.
-// This function like io.NopCloser(io.Reader).
+// Deprecated: use io.NopCloser.
 func NopReadCloser(r io.Reader) io.ReadCloser {
   return DelegateReader(r)
 }
@@ -146,4 +153,43 @@ func main() {
   // ! World
   // World
 }
+```
+
+## Counting Reader / Writer
+
+`CountingReader` and `CountingWriter` track the total number of bytes
+transferred through them. They are safe for concurrent use and useful for
+progress reporting.
+
+```go
+cr := io2.NewCountingReader(resp.Body)
+io.Copy(dst, cr)
+fmt.Printf("read %d bytes\n", cr.N())
+```
+
+## Hash Reader
+
+`HashReader` updates a `hash.Hash` with every byte read, so you can verify or
+fingerprint content while streaming it elsewhere — for example computing an S3
+ETag while uploading.
+
+```go
+hr := io2.NewHashReader(file, sha256.New())
+io.Copy(uploader, hr)
+fmt.Printf("sha256=%x\n", hr.Sum(nil))
+```
+
+## Context Reader / Writer
+
+`NewContextReader` and `NewContextWriter` abort reads and writes once the
+supplied `context.Context` is canceled. The context is checked before each
+call, so they work best with readers and writers that return control
+frequently (network, buffered I/O).
+
+```go
+ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+defer cancel()
+
+r := io2.NewContextReader(ctx, conn)
+_, err := io.Copy(dst, r) // returns context.DeadlineExceeded on timeout
 ```
